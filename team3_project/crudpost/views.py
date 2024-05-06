@@ -35,19 +35,23 @@ def get_all_assignment(request):
     #생성되어 있는 전체 과제 목록 조회
     return 0
 
-def get_assignment_part(request):
-    #파트별 과제 조회
-    return 0
+def get_assignment_part(request, part):
+    assignments = Assignment.objects.filter(part=part) #특정 조건을 만족하는 객체들만 가져오는 메서드
+    serializer = AssignmentSerializer(assignments, many=True, fields=['title', 'created_at', 'part'])
+    return JsonResponse(serializer.data)
 
+def get_assignment_tag(request, tag):
+    assignments = Assignment.objects.filter(tag=tag)
+    titles = [assignment.title for assignment in assignments ]
+    return JsonResponse({'titles':titles})
 
-class aAssignmentAPIView(APIView):
+class assignmentAPIView(APIView):
 
    def get_object(self, pk):
-        #특정 과제에 대해 불러오기
-        return 0
+        assign=get_object_or_404(Assignment, pk=pk)
+        return assign
 
    def get_assignment(self, request, pk):
-        #특정 과제 내용 조회
         return 0
 
    def modify_assignment(self, request, pk):
