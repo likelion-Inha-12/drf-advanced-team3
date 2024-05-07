@@ -1,8 +1,5 @@
 from django.db import models
 
-class Member(models.Model):
-    name = models.CharField(max_length=20)
-
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -19,17 +16,25 @@ class Assignment(models.Model):
         ('A', 'ALL') #          두번째 값 : 사용자에게 보여지는 값
     ]
     part=models.CharField(max_length=1,choices=part_choices,verbose_name="과제 파트")#정해진 옵션 중 하나만 쓸 수 있게 하는 용도, json body 입력예시 : 'part':'B'
-    tag = models.CharField(max_length=100, blank=True, null=True, verbose_name="태그")
+    tag = models.CharField(max_length=100, verbose_name="태그")
     assign_github_link=models.URLField(verbose_name="깃허브 링크")
     assign_content=models.TextField(verbose_name="과제 내용")
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs): #save 함수 오버라이딩. 기존의 save() 메서드 : 모델 인스턴스를 데이터베이스에 저장하는 역할
+    # tag 값을 기준으로 Category를 생성하거나 가져옴
+        category, created = Category.objects.get_or_create(name=self.tag) #created:새로 생성된 것인지 판단하는 불리언값
+        self.category = category
+        super().save(*args, **kwargs)
 
 class Submission(models.Model):
-    member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
     assignment_id=models.ForeignKey(Assignment,on_delete=models.CASCADE)
     submit_content=models.TextField(verbose_name="과제 설명")
     submit_github_link=models.URLField(verbose_name="깃허브 링크")
     submit_date=models.DateTimeField(auto_now_add=True, verbose_name="작성 일자")
+
+    def __str__(self):
+        return f"{self.assignment_id.id}번째 과제의 {self.id}번째 제출물입니다"
 

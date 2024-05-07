@@ -28,14 +28,16 @@ def create_assignment(request):
     return JsonResponse({'message':'success'})
 
 @api_view(['POST'])
-def create_submission(request):
-    #제출물 생성
+def create_submission(request,assignment_id):
+    assignment=get_object_or_404(Assignment, pk=assignment_id)
     submission = Submission(
-        content = request.data.get('content'),
-        link = request.data.get('link')
+        assignment_id = assignment,
+        submit_content = request.data.get('submit_content'),
+        submit_github_link = request.data.get('submit_github_link')
     )
     submission.save()
     return JsonResponse({'message':'success'})
+
 
 def get_all_assignment(request):
     #생성되어 있는 전체 과제 목록 조회
