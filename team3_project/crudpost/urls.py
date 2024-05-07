@@ -7,5 +7,6 @@ urlpatterns = [
     path('post/submission/<int:assignment_id>/', views.create_submission),
     path('post/<str:part>/', views.get_assignment_part),
     path('post/<str:tag>/', views.get_assignment_tag),
-    path('post/<int:pk>/', views.assignmentAPIView.as_view())
+    path('post/<int:pk>/', views.assignmentAPIView.as_view()),
+    path('post/submission/delete/<int:pk>/',views.assignmentAPIView.as_view())
 ]

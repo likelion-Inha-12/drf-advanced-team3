@@ -53,14 +53,17 @@ def get_assignment_tag(request, tag):
     titles = [assignment.title for assignment in assignments ]
     return JsonResponse({'titles':titles})
 
-class assignmentAPIView(APIView):
-
+class assignmentAPIView(APIView): 
    def get_object(self, pk):
         assign=get_object_or_404(Assignment, pk=pk)
         return assign
 
+   
    def get_assignment(self, request, pk):
-        return 0
+        assignment = get_object_or_404(Assignment, pk=pk)
+        serializer = AssignmentSerializer(assignment)
+        return Response(serializer.data)
+    
 
    def modify_assignment(self, request, pk):
         #특정 과제 내용 수정
@@ -68,6 +71,9 @@ class assignmentAPIView(APIView):
 
    def delete_assignment(self, request, pk):
         #특정 과제 삭제
-        return 0
+        assignment = get_object_or_404(Assignment, pk=pk)
+        assignment.delete()
+        return Response({"message": "delete"})
+
 
 # Create your views here.
