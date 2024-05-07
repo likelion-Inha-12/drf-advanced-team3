@@ -10,7 +10,7 @@ class Category(models.Model):
         return self.name
 
 class Assignment(models.Model):
-    title=models.CharField(max=100,verbose_name="과제 제목")
+    title=models.CharField(max_length=100,verbose_name="과제 제목")
     created_date=models.DateTimeField(auto_now_add=True,verbose_name="생성 일자")
     deadline=models.DateTimeField(verbose_name="마감 일자") #json body 입력형식 : YYYY-MM-DDThh:mm:ssZ/예:''deadline':'2024-05-10T23:59:59Z'
     part_choices=[
