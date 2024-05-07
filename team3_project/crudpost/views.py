@@ -8,20 +8,26 @@ from rest_framework import status
 from .serializer import AssignmentSerializer, SubmissionSerializer, CategorySerializer
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
+
+@api_view(['POST'])
 def create_assignment(request):
     #과제 생성
-    assignement=Assignment(
-        title=request.data.get('title'),
-        deadline=request.data.get('deadline'),
-        part=request.data.get('part'),
-        tag=request.data.get('tag'),
-        link = request.data.get('link'),
-        content = request.data.get('content')
-    )
-    assignement.save()
+    if request.method =='POST':
+
+        assignement=Assignment(
+            title=request.data.get('title'),
+            deadline=request.data.get('deadline'),
+            part=request.data.get('part'),
+            tag=request.data.get('tag'),
+            assign_github_link = request.data.get('assign_github_link'),
+            assign_content = request.data.get('assign_content')
+        )
+        assignement.save()
     return JsonResponse({'message':'success'})
 
+@api_view(['POST'])
 def create_submission(request):
     #제출물 생성
     submission = Submission(
