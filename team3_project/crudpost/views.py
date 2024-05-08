@@ -43,6 +43,7 @@ class AssignmentListAPIView(APIView):
             'categories': list(categories),
             'assignments': assignments_data
         }
+        return Response(response_data)
 
 
 class assignmentAPIView(APIView):
