@@ -8,7 +8,7 @@ urlpatterns = [
     #api2
     path('submission/<int:assignment_id>/', views.create_submission),
     #api3
-    path('assign/list/', views.AssignmentListAPIView.as_view(), name='List'),
+    path('assign/all/', views.AssignmentListAPIView.as_view(), name='List'),
     #api4, api6
     path('assign/<int:pk>/', views.assignmentAPIView.as_view()),
     #api5
