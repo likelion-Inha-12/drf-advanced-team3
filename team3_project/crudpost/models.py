@@ -25,8 +25,10 @@ class Assignment(models.Model):
     
     def save(self, *args, **kwargs): #save 함수 오버라이딩. 기존의 save() 메서드 : 모델 인스턴스를 데이터베이스에 저장하는 역할
     # tag 값을 기준으로 Category를 생성하거나 가져옴
-        category, created = Category.objects.get_or_create(name=self.tag) #created:새로 생성된 것인지 판단하는 불리언값
-        self.category = category
+        tag=Category.objects.filter(name=self.tag).first()
+        if not tag:
+            tag = Category.objects.create(name=self.tag)
+        self.tag = tag
         super().save(*args, **kwargs)
 
 class Submission(models.Model):
@@ -37,4 +39,3 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.assignment_id.id}번째 과제의 {self.id}번째 제출물입니다"
-
