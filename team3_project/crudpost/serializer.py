@@ -25,7 +25,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Assignment
-        fields = ['id', 'title', 'created_at', 'deadline', 'part', 'tag', 'assign_github_link', 'assign_content', 'submissions', 'time_left','submissions_count']
+        fields = '__all__'
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
