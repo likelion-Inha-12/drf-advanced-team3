@@ -47,8 +47,17 @@ def get_all_assignment(request):
 class AssignmentListAPIView(APIView):
     def get(self, request):
         assignments = Assignment.objects.all()
-        serializer = AssignmentSerializer(assignments, many=True)
-        return Response(serializer.data)
+        categories = Category.objects.all()
+        
+        assignments_serializer = AssignmentSerializer(assignments, many=True)
+        categories_serializer = CategorySerializer(categories, many=True)
+        
+        data = {
+            'assignments': assignments_serializer.data,
+            'categories': categories_serializer.data,
+        }
+        
+        return Response(data)
 
 def get_assignment_part(request, part):
     assignments = Assignment.objects.filter(part=part)

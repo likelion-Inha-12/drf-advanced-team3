@@ -12,6 +12,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     submissions = serializers.SerializerMethodField()
     time_left = serializers.SerializerMethodField() #get_{field_name} 형식의 메서드를 정의하면 해당 메서드가 자동으로 호출돼서 해당 필드 값을 반환함. 
     submissions_count = serializers.SerializerMethodField()
+    category = CategorySerializer(read_only=True)  # 카테고리 정보를 포함
 
     def get_submissions(self, obj):  # 추가
         submissions = obj.submission_set.all()  # 수정
