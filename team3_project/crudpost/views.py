@@ -13,30 +13,24 @@ from django.utils.timezone import now
 
 @api_view(['POST'])
 def create_assignment(request):
-    #과제 생성
     if request.method =='POST':
-
-        assignement=Assignment(
-            title=request.data.get('title'),
-            deadline=request.data.get('deadline'),
-            part=request.data.get('part'),
-            tag=request.data.get('tag'),
-            assign_github_link = request.data.get('assign_github_link'),
-            assign_content = request.data.get('assign_content')
-        )
-        assignement.save()
-    return JsonResponse({'message':'success'})
+        serializer = AssignmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse({'message':'성공적으로 assignment가 생성되었습니다.'}, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    return JsonResponse({'error': '유효하지 않은 요청입니다.'}, status=405)
 
 @api_view(['POST'])
-def create_submission(request,assignment_id):
-    assignment=get_object_or_404(Assignment, pk=assignment_id)
-    submission = Submission(
-        assignment_id = assignment,
-        submit_content = request.data.get('submit_content'),
-        submit_github_link = request.data.get('submit_github_link')
-    )
-    submission.save()
-    return JsonResponse({'message':'success'})
+def create_submission(request, assignment_id):
+    assignment = get_object_or_404(Assignment, pk=assignment_id)
+    if request.method == 'POST':
+        serializer = SubmissionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(assignment_id=assignment)
+            return JsonResponse({'message': '성공적으로 submission이 생성되었습니다.'}, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    return JsonResponse({'error': '유효하지 않은 요청입니다.'}, status=405)
 
 
 def get_all_assignment(request):
@@ -63,7 +57,7 @@ def get_assignment_part(request, part):
     assignments = Assignment.objects.filter(part=part)
 
     if not assignments:
-        return JsonResponse({'error': 'No assignments found with the given part.'}, status=404)
+        return JsonResponse({'error': '해당 파트에 대응하는 assignment 정보가 없습니다.'}, status=404)
 
     data = []
     for assignment in assignments:
@@ -79,7 +73,7 @@ def get_assignment_tag(request, tag):
     assignments = Assignment.objects.filter(tag=tag)
 
     if not assignments:
-        return JsonResponse({'error': 'No assignments found with the given tag.'}, status=404)
+        return JsonResponse({'error': '해당 태그에 대응하는 assignment 정보가 없습니다.'}, status=404)
     
     titles = [assignment.title for assignment in assignments ]
     return JsonResponse({'titles':titles})
@@ -93,7 +87,7 @@ class assignmentAPIView(APIView):
    
    #api4 특정 과제 조회
    def get(self, request, pk):
-        assignment = get_object_or_404(Assignment, pk=pk)
+        assignment = self.get_object(pk)
         serializer = AssignmentSerializer(assignment)
         return Response(serializer.data)
 
