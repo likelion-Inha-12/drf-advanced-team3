@@ -11,4 +11,6 @@ urlpatterns = [
     path('post/<int:pk>/', views.assignmentAPIView.as_view()),
     #api4
     path('assign/view/<int:pk>/',views.assignmentAPIView.as_view(), name="view"),
+    #api5
+    path('assign/update/<int:pk>/', views.update_assignment),
 ]

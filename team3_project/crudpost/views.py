@@ -86,4 +86,14 @@ class assignmentAPIView(APIView):
         #특정 과제 삭제
         return 0
 
+#api5 특정 과제 수정
+@api_view(['PUT'])
+def update_assignment(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+    serializer = AssignmentSerializer(assignment, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "success"}, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 # Create your views here.
