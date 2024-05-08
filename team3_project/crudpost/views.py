@@ -9,7 +9,7 @@ from .serializer import *
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from django.utils.timezone import now
 
 @api_view(['POST'])
 def create_assignment(request):
@@ -68,18 +68,19 @@ def get_assignment_tag(request, tag):
     titles = [assignment.title for assignment in assignments ]
     return JsonResponse({'titles':titles})
 
+
 class assignmentAPIView(APIView):
 
    def get_object(self, pk):
         assign=get_object_or_404(Assignment, pk=pk)
         return assign
+   
+   #api4 특정 과제 조회
+   def get(self, request, pk):
+        assignment = get_object_or_404(Assignment, pk=pk)
+        serializer = AssignmentSerializer(assignment)
+        return Response(serializer.data)
 
-   def get_assignment(self, request, pk):
-        return 0
-
-   def modify_assignment(self, request, pk):
-        #특정 과제 내용 수정
-        return 0
 
    def delete_assignment(self, request, pk):
         #특정 과제 삭제
