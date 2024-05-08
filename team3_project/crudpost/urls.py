@@ -14,4 +14,6 @@ urlpatterns = [
     path('assign/update/<int:pk>/', views.update_assignment),
     #api3
     path('assign/list/', views.AssignmentListAPIView.as_view(), name='List'),
+    #api6
+    path('assign/delete/<int:pk>/', views.assignmentAPIView.as_view(), name='delete'),
 ]
