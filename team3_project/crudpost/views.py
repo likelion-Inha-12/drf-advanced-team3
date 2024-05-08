@@ -51,7 +51,7 @@ class assignmentAPIView(APIView):
         serializer = AssignmentSerializer(assignment)
         return Response(serializer.data)
    #api6 특정 과제 삭제
-   def delete_assignment(self, request, pk):
+   def delete(self, request, pk):
         assignment = self.get_object(pk)
         assignment.delete()
         return Response({'message':'deleted!'})
