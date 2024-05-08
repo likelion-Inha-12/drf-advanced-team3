@@ -43,6 +43,15 @@ drf실습 3팀 과제 레포입니다.
 
 ### views.py
 
+### api3
+![image](https://github.com/likelion-Inha-12/drf-advanced-team3/assets/149250433/c1b7a9b5-ca05-4b40-90b4-342f00a4d4ae)
+
+### api4 
+![image](https://github.com/likelion-Inha-12/drf-advanced-team3/assets/149250433/ddb35076-a5aa-4ae9-91b0-40a7b74fc30d)
+
+### api5
+![image](https://github.com/likelion-Inha-12/drf-advanced-team3/assets/149250433/5bb8aca4-d8c9-49b7-aebd-5c49f1f78662)
+
 ### api 7 
 ![s_model](./image/s_api7.png)
 
