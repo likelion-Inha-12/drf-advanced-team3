@@ -9,7 +9,7 @@ from .serializer import *
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from django.utils.timezone import now
 
 @api_view(['POST'])
 def create_assignment(request):
@@ -43,6 +43,13 @@ def get_all_assignment(request):
     #생성되어 있는 전체 과제 목록 조회
     return 0
 
+#api3 전체 조회
+class AssignmentListAPIView(APIView):
+    def get(self, request):
+        assignments = Assignment.objects.all()
+        serializer = AssignmentSerializer(assignments, many=True)
+        return Response(serializer.data)
+
 def get_assignment_part(request, part):
     assignments = Assignment.objects.filter(part=part)
 
@@ -68,21 +75,31 @@ def get_assignment_tag(request, tag):
     titles = [assignment.title for assignment in assignments ]
     return JsonResponse({'titles':titles})
 
+
 class assignmentAPIView(APIView):
 
    def get_object(self, pk):
         assign=get_object_or_404(Assignment, pk=pk)
         return assign
-
-   def get_assignment(self, request, pk):
-        return 0
-
-   def modify_assignment(self, request, pk):
-        #특정 과제 내용 수정
-        return 0
+   
+   #api4 특정 과제 조회
+   def get(self, request, pk):
+        assignment = get_object_or_404(Assignment, pk=pk)
+        serializer = AssignmentSerializer(assignment)
+        return Response(serializer.data)
 
    def delete_assignment(self, request, pk):
         #특정 과제 삭제
         return 0
+
+#api5 특정 과제 수정
+@api_view(['PUT'])
+def update_assignment(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+    serializer = AssignmentSerializer(assignment, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "success"}, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.
