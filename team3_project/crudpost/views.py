@@ -36,8 +36,14 @@ def create_submission(request, assignment_id):
 class AssignmentListAPIView(APIView):
     def get(self, request):
         assignments = Assignment.objects.all()
-        serializer = AssignmentSerializer(assignments, many=True)
-        return Response(serializer.data)
+        categories = assignments.order_by('tag').values_list('tag', flat=True).distinct()
+        assignments_data = AssignmentSimpleSerializer(assignments, many=True).data
+        
+        response_data = {
+            'categories': list(categories),
+            'assignments': assignments_data
+        }
+
 
 class assignmentAPIView(APIView):
 
