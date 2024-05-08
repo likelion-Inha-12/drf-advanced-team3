@@ -33,3 +33,18 @@ drf실습 3팀 과제 레포입니다.
 
 ### 8. 과제를 카테고리별로 조회합니다.
 ![api8](https://github.com/likelion-Inha-12/drf-advanced-team3/assets/131441769/49f68a4d-f3a7-477c-976a-b944b14a9d2a)
+
+
+### 코드 구현 설명
+
+### models.py - Category, Assignment, Submission
+
+![s_model](./image/s_model.png)
+
+### views.py
+
+### api 7 
+![s_model](./image/s_api7.png)
+
+### api 8 
+![s_model](./image/s_api8.png)
