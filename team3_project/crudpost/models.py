@@ -20,7 +20,7 @@ class Assignment(models.Model):
     assign_github_link=models.URLField(verbose_name="깃허브 링크")
     assign_content=models.TextField(verbose_name="과제 내용")
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="카테고리", null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="카테고리", null=False, blank=True)
     
 
     def __str__(self):

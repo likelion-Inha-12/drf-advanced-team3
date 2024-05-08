@@ -43,6 +43,13 @@ def get_all_assignment(request):
     #생성되어 있는 전체 과제 목록 조회
     return 0
 
+#api3 전체 조회
+class AssignmentListAPIView(APIView):
+    def get(self, request):
+        assignments = Assignment.objects.all()
+        serializer = AssignmentSerializer(assignments, many=True)
+        return Response(serializer.data)
+
 def get_assignment_part(request, part):
     assignments = Assignment.objects.filter(part=part)
 
@@ -80,7 +87,6 @@ class assignmentAPIView(APIView):
         assignment = get_object_or_404(Assignment, pk=pk)
         serializer = AssignmentSerializer(assignment)
         return Response(serializer.data)
-
 
    def delete_assignment(self, request, pk):
         #특정 과제 삭제
